@@ -36,11 +36,15 @@ jobs:
           exit 1
         fi
 
+    - name: Set Docker image tag
+      id: docker_tag
+      run: echo "TAG=${GITHUB_SHA}" >> $GITHUB_ENV
+
     - name: Build and Push Docker Image
       uses: mr-smithers-excellent/docker-build-push@v4
       with:
         image: technosport/test01
-        tags: ${{ github.sha }}
+        tag: ${{ env.TAG }}
         registry: docker.io
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
